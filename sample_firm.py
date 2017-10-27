@@ -12,11 +12,12 @@ def get_files(folder, file_type):
                 files.append(file)
     return files
 
-def filter_sample_firms(receipt_file, firm_file):
-    receipts = pd.read_csv(receipt_file, delimiter=',')
-    firms = pd.read_csv(firm_file, delimiter=',')
-    firms_list = firms['tin'].tolist()
-
+def filter_sample_firms(receipt_file, firm_file, output_file):
+    receipts_df = pd.read_csv(receipt_file, delimiter=',')
+    firms_df = pd.read_csv(firm_file, delimiter=',')
+    firms_list = firms_df['tin'].tolist()
+    filtered_df = receipts_df[receipts_df['tin'].isin(firms_list)]
+    filtered_df.to_csv(output_file, sep=',', encoding='utf-8')
 
 if __name__ == '__main__':
     import argparse
@@ -27,10 +28,11 @@ if __name__ == '__main__':
 
     datafile = args.f
     #print(datafile)
-    directory = "./sample_firm"
+    firm_file = args.s
     index = datafile.rfind("/")
     filename = datafile[index + 1:]
-    output_file = directory + "/processed_" + filename
-
+    directory = "./sample_firm"
     if not os.path.exists(directory):
         os.makedirs(directory)
+    output_file = directory + "/filtered_" + filename
+    filter_sample_firms(datafile, firm_file, output_file)
