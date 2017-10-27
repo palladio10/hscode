@@ -7,9 +7,9 @@ def get_files(folder, file_type):
     files = []
     if os.path.isdir(folder):
         only_files = [f for f in listdir(folder) if isfile(join(folder, f))]
-        for file in only_files:
-            if file.endswith(file_type):
-                files.append(file)
+        for csv_file in only_files:
+            if csv_file.endswith(file_type) and csv_file.startswith("processed"):
+                files.append(csv_file)
     return files
 
 def filter_sample_firms(receipt_file, firm_file, output_file):
@@ -22,17 +22,18 @@ def filter_sample_firms(receipt_file, firm_file, output_file):
 if __name__ == '__main__':
     import argparse
     parser = argparse.ArgumentParser()
-    parser.add_argument("-f",help="receipt file")
+    parser.add_argument("-f",help="receipt file folder")
     parser.add_argument("-s", help="sample firm file")
     args = parser.parse_args()
 
-    datafile = args.f
+    folder = args.f
+    files = get_files(folder, ".csv")
     #print(datafile)
     firm_file = args.s
-    index = datafile.rfind("/")
-    filename = datafile[index + 1:]
     directory = "./sample_firm"
     if not os.path.exists(directory):
         os.makedirs(directory)
-    output_file = directory + "/filtered_" + filename
-    filter_sample_firms(datafile, firm_file, output_file)
+    for file in files:
+        print(file)
+        output_file = directory + "/filtered_" + file
+        filter_sample_firms(folder + "/" + file, firm_file, output_file)
