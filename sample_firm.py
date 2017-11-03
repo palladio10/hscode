@@ -3,12 +3,12 @@ from os import listdir
 from os.path import isfile, join
 import pandas as pd
 
-def get_files(folder, file_type):
+def get_files(folder, suffix, prefix):
     files = []
     if os.path.isdir(folder):
         only_files = [f for f in listdir(folder) if isfile(join(folder, f))]
         for csv_file in only_files:
-            if csv_file.endswith(file_type) and csv_file.startswith("processed"):
+            if csv_file.endswith(suffix) and csv_file.startswith(prefix):
                 files.append(csv_file)
     return files
 
@@ -27,7 +27,7 @@ if __name__ == '__main__':
     args = parser.parse_args()
 
     folder = args.f
-    files = get_files(folder, ".csv")
+    files = get_files(folder, ".csv", "processed")
     #print(datafile)
     firm_file = args.s
     directory = "./sample_firm"
