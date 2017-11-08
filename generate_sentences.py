@@ -10,7 +10,7 @@ def produce_sentences_per_receipt(folder):
     directory = "./sentences"
     if not os.path.exists(directory):
         os.makedirs(directory)
-    output_file = directory + "/per_receipt.csv"
+    output_file = directory + "/per_receipt.txt"
     with open(output_file, mode='a') as f:
         f.write("name" + "\n")
         for file in files:
