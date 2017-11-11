@@ -46,8 +46,6 @@ df = df[idx]
 groups = df[LABELS +['count']].groupby(LABELS).count()
 del df['count']
 
-df.to_csv("test.csv");
-
 df_train, df_test = train_test_split(df,
                                      train_size=0.8,
                                      random_state=123,
@@ -81,9 +79,9 @@ pl = Pipeline([
     #('dim_red', SelectKBest(chi2, chi_k)),
 
     #('int', SparseInteractions(degree=2)),  ## This is very cpu costly but adds 20ppt on accuracy
-    #        ('clf', LinearSVC())
-    ('clf', LogisticRegression()) ## all ofthis is running single cpu
-    #        ('clf', SVC())
+            ('clf', LinearSVC())
+    #('clf', LogisticRegression()) ## all ofthis is running single cpu
+            #('clf', SVC())
            #('clf', RandomForestClassifier(n_estimators=15))
 ])
 
